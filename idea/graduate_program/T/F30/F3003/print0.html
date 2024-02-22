@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <script src="/T/res/lib/jquery@3.6.0/dist/jquery.min.js"></script>
+</head>
+<style>
+    #watermark {
+        color: #d0d0d0;
+        font-size: 30pt;
+        -webkit-transform: rotate(-30deg);
+        -moz-transform: rotate(-30deg);
+        transform: rotate(-45deg);
+        position: fixed;
+        width: 50px;
+        height: 20px;
+        padding-top: 0px;
+        padding-left: 80px;
+        z-index: 100;
+        opacity: 0.5;
+    }
+
+    body, td, th {
+        font-size: 13px;
+        text-align: left;
+        height: 32px;
+    }
+
+    table {
+        width: 100%;
+        margin: 0px auto;
+        table-layout: fixed;
+    }
+
+    .title_table {
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .title_table tr {
+        height: 22px;
+    }
+
+    .shuju {
+        border: 1px solid #333;
+        border-collapse: collapse;
+    }
+
+    .shuju th {
+        font-weight: bold;
+    }
+
+    .shuju td, .shuju th {
+        border: 1px solid #333;
+        font-weight: normal;
+    }
+
+    .shuju th {
+        text-aligh: center;
+    }
+
+    .qianzi {
+        margin-top: 10px;
+    }
+</style>
+<body>
+
+
+<!--begin-->
+
+
+<table style="width: 100%;">
+    <tr>
+        <td style="text-align: center"><h2>WLibrary</h2></td>
+    </tr>
+    <tr>
+        <td style="text-align: center"><h2>书籍单</h2></td>
+    </tr>
+</table>
+<div id="watermark">
+    <p>WLibrary 书籍单</p>
+</div>
+<table border="0" cellspacing="0" cellpadding="3" align="center" width="100%" class="shuju">
+    <colgroup>
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+    </colgroup>
+    <tr>
+        <th colspan="2">系统名称</th>
+        <td colspan="4">WLibrary</td>
+        <th colspan="2">现在时间</th>
+        <td colspan="4">$!time</td>
+    </tr>
+    <tr>
+        <th>序号</th>
+        <th>书名</th>
+        <th colspan="3">作者/出版社/出版时间</th>
+        <th>分类</th>
+        <th>售价</th>
+        <th>库存</th>
+        <th>评分</th>
+        <th colspan="2">梗概</th>
+    </tr>
+    #set($sun = 0)
+    #foreach($book in ${books})
+    <tr>
+        <td>${foreach.count}</td>
+        <td>$!book.name</td>
+        <td colspan="3">$!book.author</td>
+        <td>$!BClass1[$!book.bclass1]/$BClass2[$!book.bclass1][$!book.bclass2]</td>
+        <td>$!book.price</td>
+        <td>$!book.left 本</td>
+        #set($rate = $!book.rate - 5)
+        <td>$rate</td>
+        <td colspan="2">$!book.detail</td>
+        #set($sun= $sun + 1)
+    </tr>
+    #end
+    <tr>
+        <th>总计</th>
+        <th colspan="10">$sun</th>
+    </tr>
+
+</table>
+
+
+<!--end-->
+
+<span style="float: right;padding-right: 60px;margin-top: 20px"><button id="printbtn">打印</button></span>
+
+<script>
+    $(function () {
+        $("#printbtn").on("click", doPrint);
+        window.onafterprint = function () {
+            window.location.reload();
+        }
+//打印前事件
+        window.onbeforeprint = function () {
+        }
+    });
+
+    function doPrint() {
+        var bd = window.document.body.innerHTML;
+        begin = "<!--begin-->";
+        end = "<!--end-->";
+        var printhtml = bd.substr(bd.indexOf(begin) + 12);
+        printhtml = printhtml.substring(0, printhtml.indexOf(end));
+        window.document.body.innerHTML = printhtml;
+        window.print();
+    }
+</script>
+</body>
+</HTML>
