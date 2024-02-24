@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span style="font-size: 18px;position: relative;left: 1%">{{book.name}}</span>
       </div>
-      <div @click="">
+      <div>
         <div style="display: flex;flex-direction: row">
           <div style="position: relative;left: 3%;">
             <el-image
@@ -13,7 +13,7 @@
                 :preview-src-list="[book.picture_URL]">
             </el-image>
           </div>
-          <div style="position: relative;left: 8%;width: 80%">
+          <div style="position: relative;left: 8%;width: 80%" @click="openDetail(book)">
             <el-descriptions class="margin-top" :column="1" id="form_size">
               <span slot="title" style="font-size: 22px;font-family: 'Microsoft YaHei UI';font-weight: bolder">{{book.name}}</span>
               <el-descriptions-item label="作者/出版社/出版时间"><span class="span_desc">{{book.author}}</span></el-descriptions-item>
@@ -48,6 +48,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
     </el-pagination>
+    <detail ref="detail" @ok="loadData"></detail>
   </div>
 </template>
 <script>
@@ -84,6 +85,10 @@ module.exports = {
     self.loadData()
   },
   methods: {
+    openDetail(bookId){
+      self.$refs.detail.show(bookId)
+      self.$refs.detail.drawer = true
+    },
     loadData(){
       if(!self.LoginJudge()){
         self.MtshowError("请先登录")
@@ -123,6 +128,9 @@ module.exports = {
       });
     }
   },
+  components:{
+    "detail":"url:/T/F20/F2016/CommentDetail.vue"
+  }
 }
 </script>
 <style scoped>

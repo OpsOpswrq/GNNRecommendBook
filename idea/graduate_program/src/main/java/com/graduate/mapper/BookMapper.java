@@ -32,8 +32,8 @@ public interface BookMapper {
     void UpdateBook(JSONObject jsonObject);
     @Delete("delete from book where id = #{id};")
     void DeleteBook(@Param("id") int id);
-    @Select("select a.* from book as a,(select count(*) as cnt,bookId from history where userId = #{userId} group by bookId order by cnt desc) as b where a.id not in (select bookId from collection where userId = #{userId}) and a.bclass1 = #{bclass1_2} and a.id = b.bookId limit #{begin},#{pageSize};")
+    @Select("select a.* from book as a,(select count(*) as cnt,bookId from history where userId = #{userId} group by bookId order by cnt desc) as b where a.id not in (select bookId from collection where userId = #{userId}) and a.bclass1 = #{bclass1_2} and a.id = b.bookId order by a.rate desc limit #{begin},#{pageSize};")
     List<JSONObject> SearchBookANDGETONE(@Param("userId") int userId,@Param("bclass1_2") int bclass1_2,@Param("begin") int begin,@Param("pageSize") int pageSize);
-    @Select("select a.* from book as a,(select count(*) as cnt,bookId from history where userId = #{userId} group by bookId order by cnt desc) as b where a.id not in (select bookId from collection where userId = #{userId}) and a.bclass1 = #{bclass1_2} and a.id = b.bookId limit #{begin},#{pageSize};")
+    @Select("select a.* from book as a,(select count(*) as cnt,bookId from history where userId = #{userId} group by bookId order by cnt desc) as b where a.id not in (select bookId from collection where userId = #{userId}) and a.bclass1 = #{bclass1_2} and a.id = b.bookId order by a.rate desc limit #{begin},#{pageSize};")
     List<JSONObject> SearchBookANDGETONEHALF(@Param("userId") int userId,@Param("bclass1_2") int bclass1_2,@Param("begin") int begin,@Param("pageSize") int pageSize);
 }
